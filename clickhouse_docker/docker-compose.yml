@@ -1,0 +1,33 @@
+#networks:
+#  datalens_net:
+#    external: true
+#    name: datalens_default
+
+services:
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8
+    container_name: datalens-clickhouse
+    restart: unless-stopped
+    environment:
+      CLICKHOUSE_DB: datalens_demo
+      CLICKHOUSE_USER: dl_admin
+      CLICKHOUSE_PASSWORD: dl_admin
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - clickhouse_logs:/var/log/clickhouse-server
+    healthcheck:
+      test: ["CMD-SHELL", "clickhouse-client --user dl_admin --password dl_admin --query 'SELECT 1'"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+#    networks:
+#      - datalens_net
+
+volumes:
+  clickhouse_data:
+  clickhouse_logs:
