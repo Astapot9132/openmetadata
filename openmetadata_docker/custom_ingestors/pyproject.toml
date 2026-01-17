@@ -1,0 +1,18 @@
+[project]
+name = "custom-ingestors"
+version = "0.1.0"
+dependencies = [
+    "openmetadata-ingestion==1.11.4",
+    "google-auth>=2.0.0",
+    "google-auth-oauthlib>=1.0.0"
+]
+
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["custom_ingestors*"]
+
+[tool.setuptools.package-data]
+"custom_ingestors.gs_integration.creds" = ["*.json"]
